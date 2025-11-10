@@ -2,7 +2,7 @@ CREATE TABLE users (
 	user_id INT PRIMARY KEY,
     first_name VARCHAR(25) NOT NULL,
     last_name VARCHAR(25) NOT NULL,
-    email VARCHAR(40) UNIQUE NOT NULL,
+    email VARCHAR(50) UNIQUE NOT NULL,
     password_hash VARCHAR(50) NOT NULL,
     phone_number VARCHAR(13) NULL,
     roles ENUM('guest', 'host', 'admin') NOT NULL,
@@ -10,13 +10,14 @@ CREATE TABLE users (
     );
 
 CREATE TABLE property ( 
-    property_id INT,
-    user_id INT,
-    rating INTEGER CHECK(rating >= 1 AND rating <=5) NOT NULL,
-    comments TEXT NOT NULL,
+    property_id INT PRIMARY KEY AUTO_INCREMENT,
+    host_id INT,
+    property_description TEXT NOT NULL,
+    location VARCHAR(20) NOT NULL,
+    price_per_night DECIMAL(7, 2) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(property_id) REFERENCES property(property_id),
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(host_id) REFERENCES users(user_id)
     );
     
 CREATE TABLE booking (
@@ -42,7 +43,7 @@ CREATE TABLE payment (
     );
 
 CREATE TABLE review (
-	review_id INT,
+	review_id INT PRIMARY KEY,
     property_id INT,
     user_id INT,
     rating INTEGER CHECK(rating >= 1 AND rating <=5) NOT NULL,
